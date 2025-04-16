@@ -31,12 +31,16 @@ vector<int> parseString(const std::string &input) {
 int main() {
     // vector<int> input = getInput(11);
     // vector<int> input = {1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1};
-    vector<int> input = parseString("10011100101");
+    // vector<int> input = parseString("10011100101");
+    // vector<int> input = parseString("000001100001110");
+    // vector<int> input = parseString("");
+    vector<int> input = parseString("00110001110");
 
     vector<int> encodedInput = Hamming::encode(input);
 
     Utils::printVector(encodedInput);
-    cout << "100111010100100" << endl;
 
+    // cout << "001100011110010" << endl;
+    
     return 0;
 }
