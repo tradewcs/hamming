@@ -11,11 +11,11 @@ namespace Hamming {
         return parityBitsCount;
     }
 
-    bool isPositionReserved(int totalBitsCount, int position) {
-        int parityBitsCount = getParityBitsCount(totalBitsCount);
+    bool isParityBit(int bitsCount, int position) {
+        int parityBitsCount = getParityBitsCount(bitsCount);
         for (int i = 0; i < parityBitsCount; i++) {
-            int posReserved = (1 << i) - 1;
-            if (posReserved == position) {
+            int parityIndex = (1 << i) - 1;
+            if (parityIndex == position) {
                 return true;
             }
         }
@@ -65,7 +65,7 @@ namespace Hamming {
         int i = 0;
         int j = 0;
         while (i < totalBitsCount) {
-            if (isPositionReserved(data.size(), i)) {
+            if (isParityBit(data.size(), i)) {
                 templateEncoded[i] = 0;
             } else {
                 templateEncoded[i] = data[j];
@@ -113,24 +113,28 @@ namespace Hamming {
         return parityBits;
     }
 
-    std::vector<int> decode(const std::vector<int> &encodedData) {
+    int findErrorIndex(const std::vector<int> &encodedData) {
         std::vector<int> parityBits(getParityBitsCount(getDataMinSize(encodedData.size())));
         int parityBitsCount = parityBits.size();
 
         std::vector<int> decodedData(encodedData);
         int errorSum = 0;
         for (int i = 0; i < parityBitsCount; i++) {
-            int position = (1 << i) - 1;
+            int position = 1 << i;
             parityBits[i] = Hamming::calculateParity(encodedData, position);
 
-            if (parityBits[i] != encodedData[position]) {
-                errorSum += position + 1;
+            if (parityBits[i] != encodedData[position - 1]) {
+                errorSum += position;
             }
         }
 
-        if (errorSum > 0) {
-            decodedData[errorSum] ^= 1 ;
-        }
+        return errorSum - 1;
+    }
+
+    std::vector<int> decode(const std::vector<int> &encodedData) {
+        std::vector<int> decodedData(encodedData);
+        int errorIndex = findErrorIndex(encodedData);
+        decodedData[errorIndex] ^= 1;
 
         return decodedData;
     }
