@@ -16,7 +16,7 @@ namespace Utils {
 
     void printVector(const std::vector<int> &vec) {
         for (int el : vec) {
-            std::cout << el << " ";
+            std::cout << el << "";
         }
         std::cout << std::endl;
     }

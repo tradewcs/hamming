@@ -76,8 +76,9 @@ namespace Hamming {
     }
 
     std::vector<int> getHaffmanTemplate(const std::vector<int> &data) {
-        int totalBitsCount = getParityBitsCount(data.size());
-        std::vector<int> templateEncoded(data.size() + totalBitsCount);
+        int parityBitsCount = getParityBitsCount(data.size());
+        int totalBitsCount = data.size() + parityBitsCount;
+        std::vector<int> templateEncoded(totalBitsCount);
 
         int i = 0;
         int j = 0;
@@ -95,20 +96,24 @@ namespace Hamming {
         return templateEncoded;
     }
 
-    std::vector<int> encode(const std::vector<int> &data) {
+    std::vector<int> encodeTemplate(const std::vector<int> &data) {
         int parityBitsCount = getParityBitsCount(data.size());
         vector<int> parityBits(parityBitsCount);
 
-        std::vector<int> encodedData = getHaffmanTemplate(data);
+        std::vector<int> encodedDataTemplate = getHaffmanTemplate(data);
         for (int i = 0; i < parityBitsCount; i++) {
             int position = (1 << i) - 1;
 
-            int parity = Hamming::calculateParity(encodedData, position);
+            int parity = Hamming::calculateParity(encodedDataTemplate, position);
             parityBits[i] = parity;
-            encodedData[position] = parity;
+            encodedDataTemplate[position] = parity;
         }
 
-        return encodedData;
+        return encodedDataTemplate;
+    }
+
+    std::vector<int> encode(const std::vector<int> &data) {
+        return encodeTemplate(data);
     }
 
     std::vector<int> getParityBits(const std::vector<int> &data) {
