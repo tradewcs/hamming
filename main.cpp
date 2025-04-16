@@ -6,7 +6,7 @@
 using namespace std;
 
 vector<int> getInput(int inputSize) {
-    vecor<int> input(inputSize);
+    vector<int> input(inputSize);
     for(int i = 0; i < inputSize; i++) {
         cin >> input[i];
     }

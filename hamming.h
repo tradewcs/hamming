@@ -77,26 +77,26 @@ namespace Hamming {
 
     std::vector<int> getHaffmanTemplate(const std::vector<int> &data) {
         int totalBitsCount = getParityBitsCount(data.size());
-        std::vector<int> template(data.size() + totalBitsCount);
+        std::vector<int> templateEncoded(data.size() + totalBitsCount);
 
         int i = 0;
         int j = 0;
         while (i < totalBitsCount) {
             if ((i + 1) && !(i + 1 & i)) {
-                template[i] = 0;
+                templateEncoded[i] = 0;
             } else {
-                template[i] = data[j];
+                templateEncoded[i] = data[j];
                 j++;
             }
 
             i++;
         }
 
-        return template;
+        return templateEncoded;
     }
 
     std::vector<int> encode(const std::vector<int> &data) {
-        int parityBitsCount = gettParityBitsCount(data);
+        int parityBitsCount = getParityBitsCount(data.size());
         vector<int> parityBits(parityBitsCount);
 
         std::vector<int> encodedData = getHaffmanTemplate(data);
@@ -112,7 +112,7 @@ namespace Hamming {
     }
 
     std::vector<int> getParityBits(const std::vector<int> &data) {
-        int parityBitsCount = gettParityBitsCount(data);
+        int parityBitsCount = getParityBitsCount(data.size());
         vector<int> parityBits(parityBitsCount);
 
         std::vector<int> encodedData = getHaffmanTemplate(data);
@@ -135,7 +135,7 @@ namespace Hamming {
         int errorSum = 0;
         for (int i = 0; i < parityBitsCount; i++) {
             int position = (1 << i) - 1;
-            parityBits[i] = Hamming::calculateParity(encodedBIts, position);
+            parityBits[i] = Hamming::calculateParity(encodedData, position);
 
             if (parityBits[i] != encodedData[position]) {
                 errorSum += position + 1;
