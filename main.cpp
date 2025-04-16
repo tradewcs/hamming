@@ -17,7 +17,7 @@ vector<int> getInput(int inputSize) {
 // (15, 11) hamming code
 int main() {
     vector<int> input = getInput(11);
-    int parityBitsCount = countParityBitsCount(bitsCount);
+
     vector<int> encodedBIts = Hamming::encode(input);
 
     return 0;
